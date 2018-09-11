@@ -1,0 +1,29 @@
+shaderProgs = [
+	name = "shader1"
+	shaders = [
+		file = "base2.fshader"
+		type = "fshader"
+	]
+	shaders = [
+		file = "matrixPersp.vshader"
+		type = "vshader"
+	]
+	uniformLocation = "offset"
+	uniformLocation = "perspectiveMatrix"
+]
+
+objects = [
+	name = "cubo1"
+	type = "polyhedron"
+	shaderProg = "shader1"
+	mesh = "cube.mesh"
+	translation = { 1.0f, 1.0f, 1.0f }
+	rotation = { 0.0f, 0.0f, 0.0f }
+	scale = { 1.0f, 1.0f, 1.0f }
+]
+// objects = [
+// 	name = "luz"
+// 	type = "point-light"
+// 	pos = floats{ 1.0f, 1.0f, 1.0f }
+// 	intensity = ints{ 255, 255, 255 }
+// ]
