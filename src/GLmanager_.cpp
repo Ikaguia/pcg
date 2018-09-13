@@ -161,7 +161,7 @@ namespace GLmanager{
 		}
 		void initShaders(){
 			_::shProgram = glShaderProgram::create({
-				glShader::createF("base2.fshader", GL_FRAGMENT_SHADER),
+				glShader::createF("vertexColor.fshader", GL_FRAGMENT_SHADER),
 				glShader::createF("matrixPersp.vshader", GL_VERTEX_SHADER),
 			});
 			_::shOffsetLocation = glGetUniformLocation(_::shProgram, "offset");

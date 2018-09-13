@@ -107,6 +107,30 @@ void Tmesh::construct(const TdataFile &meshData){
 	}
 	else cerr << "no faces" << endl;
 
+
+
+	cerr << "vertices = {" << endl;
+	for(const auto &v : vertices){
+		cerr << "	";
+		cerr << v.xyzw[0] << ", ";
+		cerr << v.xyzw[1] << ", ";
+		cerr << v.xyzw[2] << ", ";
+		cerr << v.xyzw[3] << ", ";
+		cerr << v.rgba[0] << ", ";
+		cerr << v.rgba[1] << ", ";
+		cerr << v.rgba[2] << ", ";
+		cerr << v.rgba[3] << endl;
+	}
+	cerr << "}" << endl;
+
+	cerr << "indices = {" << endl;
+	for(const GLuint i : vertexIndices){
+		cerr << "	" << (float)i << "," << endl;
+	}
+	cerr << "}" << endl;
+
+
+
 	vertexCount = vertexIndices.size();
 
 	//create and bind vertex array object
@@ -167,7 +191,7 @@ void Tmesh::destruct(){
 
 //public functions
 void Tmesh::draw(glm::vec4 translation, glm::vec4 rotation, glm::vec4 scale){
-	cerr << "Drawing mesh '" << name << "'" << endl;
+	// cerr << "Drawing mesh '" << name << "'" << endl;
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, vertexCount, GL_UNSIGNED_INT, 0);

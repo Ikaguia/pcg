@@ -1,26 +1,26 @@
 vertices = [//tlf
-	xyz = f{-1.0f,  1.0f, -1.6f }
+	xyz = f{-1.0f,  1.0f,  1.0f }
 ]
 vertices = [//trf
-	xyz = f{ 1.0f,  1.0f, -1.6f }
+	xyz = f{ 1.0f,  1.0f,  1.0f }
 ]
 vertices = [//brf
-	xyz = f{ 1.0f, -1.0f, -1.6f }
+	xyz = f{ 1.0f, -1.0f,  1.0f }
 ]
 vertices = [//blf
-	xyz = f{-1.0f, -1.0f, -1.6f }
+	xyz = f{-1.0f, -1.0f,  1.0f }
 ]
 vertices = [//tlb
-	xyz = f{-1.0f,  1.0f, -1.2f }
+	xyz = f{-1.0f,  1.0f, -1.0f }
 ]
 vertices = [//trb
-	xyz = f{ 1.0f,  1.0f, -1.2f }
+	xyz = f{ 1.0f,  1.0f, -1.0f }
 ]
 vertices = [//brb
-	xyz = f{ 1.0f, -1.0f, -1.2f }
+	xyz = f{ 1.0f, -1.0f, -1.0f }
 ]
 vertices = [//blb
-	xyz = f{-1.0f, -1.0f, -1.2f }
+	xyz = f{-1.0f, -1.0f, -1.0f }
 ]
 
 colors = [//red

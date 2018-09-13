@@ -2,8 +2,8 @@ CC=g++
 RMDIR = rm -rf
 RM = rm -f
 
-DEP_FLAGS = 
-# DEP_FLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.d
+# DEP_FLAGS = 
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.d
 DIRECTIVES = -std=c++14 -Wall -Wextra -I $(HEADER_PATH) -O2 -D DATA_PATH=\"$(DATA_PATH)\" -Wno-unused-result -Wno-unused-parameter
 LIBS = -L$(LIB_PATH) -lGL -lGLU -lglut -lGLEW -L/usr/lib64
 
