@@ -38,10 +38,10 @@ const string data_path = DATA_PATH;
 #define W_OUT()	WARN("leaving")
 #define W(x)	cerr << colorRed << #x << " = " << x << colorReset << endl
 #else
-#define WARN()
+#define WARN(s)
 #define W_IN()
 #define W_OUT()
-#define W()
+#define W(x)
 #endif
 
 #endif//HEADER_COMMON

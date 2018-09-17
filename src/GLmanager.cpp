@@ -4,7 +4,14 @@
 #include <mesh.hpp>
 
 namespace GLmanager{
-	GLuint vao, vbo, ebo;
+	struct object{
+		// GLuint vao, vbo, ebo;
+		Tmesh *mesh;
+		glm::vec3 pos;
+		glm::vec3 sca;
+		glm::vec3 rot;
+	};
+	vector<object> objects;
 	namespace {
 		GLuint width = 500, height = 500;
 		GLuint displayMode = GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH | GLUT_STENCIL;
@@ -12,7 +19,6 @@ namespace GLmanager{
 		GLuint shProgram;
 
 		GLuint modelMatrixUnif, viewMatrixUnif, clipMatrixUnif;
-		glm::mat4 model, view, clip;
 
 		GLfloat cameraFOV = 45.0f;
 		GLfloat zNear = 0.1f, zFar = 100.0f;
@@ -21,29 +27,28 @@ namespace GLmanager{
 			return glm::perspective(glm::radians(cameraFOV), GLfloat(width)/GLfloat(height), zNear, zFar);
 		}
 
-		glm::mat4 calcviewMatrix(){
-			return glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -3.0f));
-			//////////////////////////////////////////////////////////////
-			// glm::mat4 matrix(1.0f);
+		glm::mat4 calcViewMatrix(glm::mat4 view = glm::mat4(1.0f)){
+			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
+			view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1, 0, 0));
 
 			// //cameraPosition
-			// matrix = glm::translate(matrix, -cameraPosition);
+			// view = glm::translate(view, -cameraPosition);
 			// //cameraRotation
 
-			// return matrix;
+			return view;
 		}
 
-		// glm::mat4 calcmodelMatrix(const object &obj, glm::mat4 matrix = glm::mat4(1.0f)){
-		// 	//translation
-		// 	matrix = glm::translate(matrix, obj.pos);
-		// 	//scale
-		// 	matrix = glm::scale(matrix, obj.scale);
-		// 	//rotation
-		// 	matrix = glm::rotate(matrix, obj.rot.x, glm::vec3(1.0f, 0.0f, 0.0f));
-		// 	matrix = glm::rotate(matrix, obj.rot.y, glm::vec3(0.0f, 1.0f, 0.0f));
-		// 	matrix = glm::rotate(matrix, obj.rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
-		// 	return matrix;
-		// }
+		glm::mat4 calcModelMatrix(const object &obj, glm::mat4 model = glm::mat4(1.0f)){
+			//translation
+			model = glm::translate(model, obj.pos);
+			//rotation
+			model = glm::rotate(model, obj.rot.x, glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, obj.rot.y, glm::vec3(0.0f, 1.0f, 0.0f));
+			model = glm::rotate(model, obj.rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
+			//scale
+			model = glm::scale(model, obj.sca);
+			return model;
+		}
 
 		void defaults(){}
 		void initShaders(){
@@ -56,104 +61,25 @@ namespace GLmanager{
 			viewMatrixUnif = glGetUniformLocation(shProgram, "viewMatrix");
 			clipMatrixUnif = glGetUniformLocation(shProgram, "clipMatrix");
 
-			// glUseProgram(shProgram);
-			// glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
-			// glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcviewMatrix()));
-			// glUniformMatrix4fv(clipMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcClipMatrix()));
-			// glUseProgram(0);
+			glUseProgram(shProgram);
+			glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
+			glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcViewMatrix()));
+			glUniformMatrix4fv(clipMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcClipMatrix()));
+			glUseProgram(0);
 		}
 		void initObjects(){
-			const GLfloat scale = 0.5f;
-			vector<GLfloat> vertices = {
-				-scale, -scale,  scale,  1,		 1,  0,  0,  1,
-				 scale, -scale,  scale,  1,		 1,  0,  0,  1,
-				 scale,  scale,  scale,  1,		 1,  0,  0,  1,
-				-scale,  scale,  scale,  1,		 1,  0,  0,  1,
-				-scale,  scale, -scale,  1,		 0,  1,  0,  1,
-				 scale,  scale, -scale,  1,		 0,  1,  0,  1,
-				 scale, -scale, -scale,  1,		 0,  1,  0,  1,
-				-scale, -scale, -scale,  1,		 0,  1,  0,  1,
-				-scale, -scale,  scale,  1,		 0,  0,  1,  1,
-				-scale, -scale, -scale,  1,		 0,  0,  1,  1,
-				 scale, -scale, -scale,  1,		 0,  0,  1,  1,
-				 scale, -scale,  scale,  1,		 0,  0,  1,  1,
-				-scale,  scale,  scale,  1,		 1,  1,  0,  1,
-				 scale,  scale,  scale,  1,		 1,  1,  0,  1,
-				 scale,  scale, -scale,  1,		 1,  1,  0,  1,
-				-scale,  scale, -scale,  1,		 1,  1,  0,  1,
-				 scale,  scale,  scale,  1,		 0,  1,  1,  1,
-				 scale, -scale,  scale,  1,		 0,  1,  1,  1,
-				 scale, -scale, -scale,  1,		 0,  1,  1,  1,
-				 scale,  scale, -scale,  1,		 0,  1,  1,  1,
-				-scale,  scale,  scale,  1,		 1,  0,  1,  1,
-				-scale,  scale, -scale,  1,		 1,  0,  1,  1,
-				-scale, -scale, -scale,  1,		 1,  0,  1,  1,
-				-scale, -scale,  scale,  1,		 1,  0,  1,  1,
-			};
-			vector<GLuint> indices = {
-				0, 1, 2,
-				0, 2, 3,
+			Tmesh *cube = new Tmesh("cube", "cube");
+			objects.resize(2);
 
-				4, 5, 6,
-				4, 6, 7,
+			objects[0].mesh = cube;
+			objects[0].pos = glm::vec3{ 0.0f,  0.0f,  0.0f};
+			objects[0].sca = glm::vec3{ 0.5f,  0.5f,  0.5f};
+			objects[0].rot = glm::vec3{ 0.0f,  0.0f,  0.0f};
 
-				8, 9, 10,
-				8, 10, 11,
-
-				12, 13, 14,
-				12, 14, 15,
-
-				16, 17, 18,
-				16, 18, 19,
-
-				20, 21, 22,
-				20, 22, 23,
-			};
-			// vector<GLfloat> vertices = {
-			// 	-scale, -scale,  0,  1,		 1,  0,  0,  1,
-			// 	-scale,  scale,  0,  1,		 0,  0,  1,  1,
-			// 	 scale,  scale,  0,  1,		 1,  1,  1,  1,
-			// 	 scale, -scale,  0,  1,		 0,  1,  0,  1,
-			// };
-			// vector<GLuint> indices = {
-			// 	0, 1, 2,
-			// 	0, 2, 3,
-			// };
-
-			glGenVertexArrays(1, &vao);
-			glGenBuffers(1, &vbo);
-			glGenBuffers(1, &ebo);
-
-			glBindVertexArray(vao);
-
-			glBindBuffer(GL_ARRAY_BUFFER, vbo);
-			glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
-
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), (void*)(0*sizeof(GLfloat)));
-			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8*sizeof(GLfloat), (void*)(4*sizeof(GLfloat)));
-
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
-
-			// glBindVertexArray(0);
-			// glBindBuffer(GL_ARRAY_BUFFER, 0);
-			// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-			// objs.resize(1);
-			// objs[0].mesh = unique_ptr<Tmesh>{new Tmesh{"cube1", "cube"}};
-			// objs[0].pos = glm::vec3(0.0f, 0.0f, -1.0f);
-
-			// objs.resize(2);
-
-			// objs[0].mesh = unique_ptr<Tmesh>{new Tmesh{"cube1", "cube"}};
-			// objs[0].pos = glm::vec3(0.0f, 0.0f, -1.0f);
-
-			// objs[1].mesh = unique_ptr<Tmesh>{new Tmesh{"cube2", "cube"}};
-			// objs[0].pos = glm::vec3(1.0f, 0.0f, -2.0f);
+			objects[1].mesh = cube;
+			objects[1].pos = glm::vec3{ 0.0f, -0.8f,  0.0f};
+			objects[1].sca = glm::vec3{ 1.0f,  0.1f,  0.7f};
+			objects[1].rot = glm::vec3{ 0.0f,  0.0f,  0.0f};
 		}
 		void init(){
 			initShaders();
@@ -170,47 +96,29 @@ namespace GLmanager{
 		}
 		void display(){
 			//reset buffers
-			// glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-			// glClear(GL_COLOR_BUFFER_BIT);
 			glClearDepth(zFar);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			//setup shader program
 			glUseProgram(shProgram);
 
-			glm::mat4 model, view, perspective;
 
-			glm::vec3 rot;
-			rot.x = glutGet(GLUT_ELAPSED_TIME) / 500.0f;
-			rot.x = fmod(rot.x, 360.0f);
-			rot.y = glutGet(GLUT_ELAPSED_TIME) / 5000.0f;
-			rot.y = fmod(rot.y, 360.0f);
-			rot.z = glutGet(GLUT_ELAPSED_TIME) / 2500.0f;
-			rot.z = fmod(rot.z, 360.0f);
+			// glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcViewMatrix()));
+			// glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcModelMatrix(objects[0])));
+			// objects[0].mesh->draw();
+			for(auto &obj : objects){
+				glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcModelMatrix(obj)));
 
-			model = glm::rotate(model, rot.x, glm::vec3(1, 0, 0));
-			model = glm::rotate(model, rot.y, glm::vec3(0, 1, 0));
-			model = glm::rotate(model, rot.z, glm::vec3(0, 0, 1));
-			glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(model));
-
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-			glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(view));
-
-			perspective = glm::perspective(glm::radians(cameraFOV), GLfloat(width)/GLfloat(height), zNear, zFar);
-			glUniformMatrix4fv(clipMatrixUnif, 1, GL_FALSE, glm::value_ptr(perspective));
-
-			glBindVertexArray(vao);
-			glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
-
-
-			//TODO: check if camera pos/rot changed
-			// glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcviewMatrix()));
+				obj.mesh->draw();
+				// glBindVertexArray(obj.vao);
+				// glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+				// glBindVertexArray(0);
+			}
 
 			// //render each object
 			// for(auto &obj : objs){
 			// 	//TODO: check if object should be drawn
-			// 	calcmodelMatrix(obj);
+			// 	calcModelMatrix(obj);
 			// 	glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE,
 			// 		glm::value_ptr(model));
 			// 	obj.mesh->draw();
@@ -251,7 +159,27 @@ namespace GLmanager{
 		}
 		void cleanup(){
 			glShaderProgram::destroy(shProgram);
-			// objs.clear();
+			delete objects[0].mesh;
+			objects.clear();
+		}
+		void update(){
+			GLfloat time = glutGet(GLUT_ELAPSED_TIME);
+
+
+			objects[0].pos.x = sin(time / 500.0f);
+			objects[0].rot.z = sin(glm::radians(360.0f) - (time / 500.0f));
+
+
+			glm::vec4 p1( objects[0].sca.x, -objects[0].sca.y, 0.0f, 1.0f);
+			glm::vec4 p2(-objects[0].sca.x, -objects[0].sca.y, 0.0f, 1.0f);
+			glm::mat4 rot(1.0f);
+			glm::rotate(rot, objects[0].rot.x, glm::vec3(1, 0, 0));
+			glm::rotate(rot, objects[0].rot.y, glm::vec3(0, 1, 0));
+			rot = glm::rotate(rot, objects[0].rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
+			p1 = rot * p1;
+			p2 = rot * p2;
+
+			objects[0].pos.y = objects[1].pos.y + objects[1].sca.y - min(p1.y, p2.y);
 		}
 		#ifdef DEBUG
 		void GLAPIENTRY debugCallback(GLenum source,
@@ -374,6 +302,7 @@ namespace GLmanager{
 		glutDisplayFunc(display);
 		glutReshapeFunc(reshape);
 		glutKeyboardFunc(keyboard);
+		glutIdleFunc(update);
 		glutMainLoop();
 
 		cleanup();
