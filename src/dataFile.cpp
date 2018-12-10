@@ -2,59 +2,71 @@
 
 
 FILE* TdataFile::read(FILE* in){
-	char *name, *str, *str2, type;
+	char *name = nullptr, *str = nullptr, *str2 = nullptr, type;
 	int i1;
 	float f1;
 
 	while(fscanf(in, " %ms", &name) == 1){
 		if(string(name) == "]"){
 			free(name);
+			name = nullptr;
 			break;
 		}
 		if((name[0] == name[1] and name[0] == '/') or string(name) == "}"){
 			free(name);
+			name = nullptr;
 			continue;
 		}
 		fscanf(in, " = %c", &type);
 		switch(type){
 			case '['://datafield
-				{
-					TdataFile son;
-					in = son.read(in);
-					sons[name].pb(son);
+				try{
+					TdataFile a;
+					in = a.read(in);
+					sons[name].push_back(move(a));
+				}
+				catch(exception &e){
+					cerr << e.what() << endl;
+					throw e;
 				}
 				break;
 			case '\"'://string
-				fscanf(in, "%m[^\"]\"", &str);
+				if(fscanf(in, "%m[^\"]\"", &str) != 1)
+					throw invalid_argument("DataFile string missmatch");
 				strings[name].pb(str);
 				free(str);
+				str = nullptr;
 				break;
 			case 'i'://vec int
-				fscanf(in, " {%m[^}]s}", &str);
-				// W(str);
+				if(fscanf(in, " { %m[^}]s }", &str) != 1)
+					throw invalid_argument("DataFile int vector missmatch");
 				str2 = str;
 				while(sscanf(str2, " %d", &i1) == 1){
-					// W(i1);
 					ints[name].push_back(i1);
 					while(*str2 and *str2 != ',') str2++;
 					if(*str2) str2++;
+					else break;
 				}
 				free(str);
+				str = nullptr;
 				break;
 			case 'f'://vec float
-				fscanf(in, " {%m[^}]s }", &str);
+				if(fscanf(in, " { %m[^}]s }", &str) != 1)
+					throw invalid_argument("DataFile float vector missmatch");
 				str2 = str;
 				while(sscanf(str2, " %f", &f1) == 1){
 					floats[name].push_back(f1);
 					while(*str2 and *str2 != ',') str2++;
 					if(*str2) str2++;
+					else break;
 				}
 				free(str);
+				str = nullptr;
 				break;
 		}
 		free(name);
+		name = nullptr;
 	}
-
 	return in;
 }
 
@@ -134,12 +146,13 @@ string TdataFile::findFile(const string &fileName, const string &subfolder, cons
 	result = (fileName);
 	if((file = fopen(result.c_str(), "r"))) return fclose(file), result;
 
-	cerr << "Error opening file:" << endl;
-	cerr << "\t fileName = '" << fileName << "'" << endl;
-	cerr << "\t subfolder = '" << subfolder << "'" << endl;
-	cerr << "\t extension = '" << extension << "'" << endl;
-	cerr << endl;
-	exit(1);
+
+	string err;
+	err += "Error opening file:\n";
+	err += "\t fileName = '" + fileName + "'\n";
+	err += "\t subfolder = '" + subfolder + "'\n";
+	err += "\t extension = '" + extension + "'\n";
+	throw invalid_argument(err);
 }
 
 

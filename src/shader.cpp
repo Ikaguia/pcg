@@ -1,59 +1,46 @@
 #include <shader.hpp>
 
-#include <dataFile.hpp>
+TresourceManager<Tshader> Tshader::manager;
+const map<string,GLenum> Tshader::shaderTypes{
+	{"fshader",		GL_FRAGMENT_SHADER},
+	{"fragment",	GL_FRAGMENT_SHADER},
+	{"vshader",		GL_VERTEX_SHADER},
+	{"vertex",		GL_VERTEX_SHADER},
+	{"tess_control",GL_TESS_CONTROL_SHADER},
+	{"tess_eval",	GL_TESS_EVALUATION_SHADER},
+	{"geometry",	GL_GEOMETRY_SHADER},
+	{"compute",		GL_COMPUTE_SHADER},
+};
 
-GLuint glShaderProgram::create(const vector<GLuint> &shaders){
-	GLuint program = glCreateProgram();
-	glShaderProgram::bind(program, shaders);
-	return program;
+
+//constructors
+Tshader::Tshader(const TdataFile &shaderData):
+	type{getType(shaderData)},
+	id{glCreateShader(type)}{
+		construct(shaderData);
 }
-void glShaderProgram::bind(GLuint program, const vector<GLuint> &shaders){
-	for(const GLuint &shader : shaders) glAttachShader(program, shader);
+Tshader::~Tshader(){ destruct(); }
 
-	glLinkProgram(program);
-
-	GLint status;
-	glGetProgramiv(program, GL_LINK_STATUS, &status);
-	if(status != GL_TRUE){
-		char buffer[512];
-		glGetProgramInfoLog(program, 512, nullptr, buffer);
-		cerr << "Error linking shader program: " << buffer << endl;
-		exit(1);
-	}
-
-	for(const GLuint &shader : shaders) glDetachShader(program, shader);
-}
-void glShaderProgram::use(GLuint program){ glUseProgram(program); }
-void glShaderProgram::destroy(GLuint program){ glDeleteProgram(program); }
-
-
-
-
-GLuint glShader::createF(const string &sourceFile, GLenum type){
-	ifstream file(TdataFile::findFile(sourceFile, "shader"));
-	if(!file.is_open()){
-		cerr << "Error opening shader file '" << sourceFile << "'" << endl;
-		exit(1);
-	}
+//private functions
+GLuint Tshader::getType(const TdataFile &shaderData){ return shaderTypes.at(shaderData.strings.at("type")[0]); }
+void Tshader::construct(const TdataFile &shaderData){
+	string sourceFile = shaderData.strings.at("file")[0];
+	string fileName = TdataFile::findFile(sourceFile, "shader");
+	ifstream file(fileName);
+	if(not file.is_open()) throw invalid_argument("Invalid shader source file '" + sourceFile + "'");
 	string shader, s;
-	while(getline(file, s)) shader += s + "\n";
+	while(getline(file, s)) shader += (s + "\n");
 	const char *src = shader.c_str();
-	return glShader::create(src, type);
-}
 
-GLuint glShader::create(const char* source, GLenum type){
-	GLuint shader = glCreateShader(type);
-	glShaderSource(shader, 1, &source, nullptr);
-	glCompileShader(shader);
+	glShaderSource(id, 1, &src, nullptr);
+	glCompileShader(id);
 
 	GLint status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+	glGetShaderiv(id, GL_COMPILE_STATUS, &status);
 	if(status != GL_TRUE){
 		char buffer[512];
-		glGetShaderInfoLog(shader, 512, nullptr, buffer);
-		cerr << "Error compiling shader: " << buffer << endl;
-		exit(1);
+		glGetShaderInfoLog(id, 512, nullptr, buffer);
+		throw logic_error("Error compiling shader: '" + string(buffer) + "'");
 	}
-
-	return shader;
 }
+void Tshader::destruct(){ glDeleteShader(id); }

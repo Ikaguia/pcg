@@ -1,0 +1,171 @@
+scene_bg_color = f{ 0.1f, 0.1f, 0.2f, 1.0f }
+
+functions = [
+	name = "time_control"
+	start = "rand"
+	pause = "char "
+	unpause = "char "
+	speed_up = "char+"
+	speed_down = "char-"
+	display = "false"
+]
+
+objects = [
+	name = "kepler-90"
+	father = "kepler-90"
+	shaderProg = "shader_sun0"
+	mesh = "sphere-smooth"
+	functions = [
+		name = "orbit"
+		day = f{ 100.1f }
+	]
+	functions = [
+		name = "point-light"
+		ambientStrength = f{ 0.15f }
+		specularStrength = f{ 0.75f }
+		color = f{ 1.0f, 0.45f, 0.15f }
+	]
+	color = f{ 1.0f, 0.45f, 0.15f } //yellow
+]
+
+objects = [
+	name = "kepler-90b"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.0099928280651341f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 7.0f } //earth_days
+		distance = f{ 13.25460009578544f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.6f }
+	]
+	color = f{ 1.0f, 0.1f, 0.1f } //red
+]
+
+objects = [
+	name = "kepler-90c"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.009001173371647509f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 8.7f } //earth_days
+		distance = f{ 15.941343390804597f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.32f }
+	]
+	color = f{ 1.0f, 1.0f, 0.1f } //yellow
+]
+
+objects = [
+	name = "kepler-90d"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.021968965517241378f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 59.7f } //earth_days
+		distance = f{ 57.31681034482759f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.29f }
+	]
+	color = f{ 0.1f, 1.0f, 0.1f } //green
+]
+
+objects = [
+	name = "kepler-90e"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.020367061781609196f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 91.9f } //earth_days
+		distance = f{ 75.2286877394636f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.21f }
+	]
+	color = f{ 0.1f, 1.0f, 1.0f } //cyan
+]
+
+objects = [
+	name = "kepler-90f"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.022045246647509578f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 35.7584f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 124.9f } //earth_days
+		distance = f{ 85.97581417624521f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.23f }
+	]
+	color = f{ 0.1f, 0.1f, 1.0f } //blue
+]
+
+objects = [
+	name = "kepler-90g"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.06201655890804598f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 78.1528f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 210.6f } //earth_days
+		distance = f{ 127.16714559386973f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.2f }
+	]
+	color = f{ 1.0f, 0.1f, 1.0f } //magenta
+]
+
+objects = [
+	name = "kepler-90gb"
+	father = "kepler-90g"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.2f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 27.0f } //earth_days
+		distance = f{ 1.0f } //kepler-90_radii
+	]
+	color = f{ 1.0f, 0.5f, 0.5f } //red
+]
+
+objects = [
+	name = "kepler-90h"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.08635023946360153f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		day = f{ 17.3151f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 331.6f } //earth_days
+		distance = f{ 180.90277777777777f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.4f }
+	]
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+]
+
+objects = [
+	name = "kepler-90i"
+	father = "kepler-90"
+	shaderProg = "shader5"
+	mesh = "sphere-smooth"
+	scale = f{ 0.010069109195402298f } //kepler-90_radii
+	functions = [
+		name = "orbit"
+		period = f{ 14.45f } //earth_days
+		distance = f{ 19.16543582375479f } //kepler-90_radii
+		rotation = f{ 0.1f, 0.1f, 0.8f }
+	]
+	color = f{ 0.5f, 0.5f, 0.5f } //grey
+]

@@ -11,7 +11,8 @@ public:
 	map<string, vector<int>> ints;
 	map<string, vector<float>> floats;
 
-	TdataFile(){};
+	TdataFile(){}
+	~TdataFile(){}
 	TdataFile(const string &fileName, const string &subfolder="", const string &extension="");
 	void print(uint depth = 0) const;
 

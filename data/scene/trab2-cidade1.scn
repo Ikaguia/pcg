@@ -1,0 +1,622 @@
+scene_bg_color = f{ 0.5f, 0.5f, 0.75f, 1.0f }
+
+functions = [
+	name = "time_control"
+	start = "rand"
+	pause = "char "
+	unpause = "char "
+	speed_up = "char+"
+	speed_down = "char-"
+	display = "false"
+]
+
+objects = [
+	name = "centro"
+	father = "centro"
+
+	functions = [
+		name = "orbit"
+		day = f{ 10000000.1f }
+	]
+]
+
+objects = [
+	name = "sol"
+	father = "centro"
+
+	scale = f{ 10000.0f } //meters
+	color = f{ 1.0f, 0.45f, 0.15f } //yellow
+
+	mesh = "sphere-smooth"
+	shaderProg = "shader_sun0"
+
+	functions = [
+		name = "orbit"
+		period = f{ 8640.0f } //seconds
+		distance = f{ 900000.0f } //meters
+		rotation = f{ 90.0f, 5.0f, 15.0f } //degrees
+	]
+	functions = [
+		name = "point-light"
+		ambientStrength = f{ 0.45f }
+		color = f{ 1.0f, 0.45f, 0.15f }
+	]
+]
+
+objects = [
+	name = "chao"
+	father = "centro"
+
+	translation = f{ 0.0f, -10000.0f, 0.0f } //meters
+	rotation = f{ 0.0f, 0.0f, 0.0f }
+	scale = f{ 10000.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "test.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu1"
+	father = "centro"
+
+	translation = f{ 0.0f, 10.0f, 0.0f } //meters
+	scale = f{ 1.0f, 10.0f, 1.0f } //meters
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "espelhado_diffuse.jpg"
+		specular = "espelhado_specular.jpg"
+		shinyness = f{ 10 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu2"
+	father = "centro"
+
+	translation = f{ -20.0f, 8.0f, -20.0f } //meters
+	scale = f{ 1.0f, 8.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu3"
+	father = "centro"
+
+	translation = f{ -20.0, 6.0f, 0.0f } //meters
+	scale = f{ 1.0f, 6.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu4"
+	father = "centro"
+
+	translation = f{ -20.0f, 8.0f, 20.0f } //meters
+	scale = f{ 1.0f, 8.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu5"
+	father = "centro"
+
+	translation = f{ 0.0f, 6.0f, -20.0f } //meters
+	scale = f{ 1.0f, 6.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu6"
+	father = "centro"
+
+	translation = f{ 0.0f, 6.0f, 20.0f } //meters
+	scale = f{ 1.0f, 6.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu7"
+	father = "centro"
+
+	translation = f{ 20.0f, 8.0f, -20.0f } //meters
+	scale = f{ 1.0f, 8.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu8"
+	father = "centro"
+
+	translation = f{ 20.0f, 6.0f, 0.0f } //meters
+	scale = f{ 1.0f, 6.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "arranha-ceu9"
+	father = "centro"
+
+	translation = f{ 20.0f, 8.0f, 20.0f } //meters
+	scale = f{ 1.0f, 8.0f, 1.0f } //meters
+	color = f{ 1.0f, 0.5f, 0.5f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "template.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa1"
+	father = "centro"
+
+	translation = f{ -7.5f, 1.0f, -7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa2"
+	father = "centro"
+
+	translation = f{ 0.0f, 1.0f, -7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa3"
+	father = "centro"
+
+	translation = f{ 7.5f, 1.0f, -7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa4"
+	father = "centro"
+
+	translation = f{ -7.5f, 1.0f, 0.0f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa5"
+	father = "centro"
+
+	translation = f{ 7.5f, 1.0f, 0.0f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa6"
+	father = "centro"
+
+	translation = f{ -7.5f, 1.0f, 7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa7"
+	father = "centro"
+
+	translation = f{ 0.0f, 1.0f, 7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa8"
+	father = "centro"
+
+	translation = f{ 7.5f, 1.0f, 7.5f} //meters
+	scale = f{ 1.0f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa9"
+	father = "centro"
+
+	translation = f{ -12.5f, 1.0f, -12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa10"
+	father = "centro"
+
+	translation = f{ -6.25f, 1.0f, -12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa11"
+	father = "centro"
+
+	translation = f{ 0.0f, 1.0f, -12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa12"
+	father = "centro"
+
+	translation = f{ 6.25f, 1.0f, -12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa13"
+	father = "centro"
+
+	translation = f{ 12.5f, 1.0f, -12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa14"
+	father = "centro"
+
+	translation = f{ -12.5f, 1.0f, -6.25f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa15"
+	father = "centro"
+
+	translation = f{ 12.5f, 1.0f, -6.25f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa16"
+	father = "centro"
+
+	translation = f{ -12.5f, 1.0f, 0.0f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa17"
+	father = "centro"
+
+	translation = f{ 12.5f, 1.0f, 0.0f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa18"
+	father = "centro"
+
+	translation = f{ -12.5f, 1.0f, 6.25f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa19"
+	father = "centro"
+
+	translation = f{ 12.5f, 1.0f, 6.25f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+objects = [
+	name = "casa20"
+	father = "centro"
+
+	translation = f{ -12.5f, 1.0f, 12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa21"
+	father = "centro"
+
+	translation = f{ -6.25f, 1.0f, 12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa22"
+	father = "centro"
+
+	translation = f{ 0.0f, 1.0f, 12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa23"
+	father = "centro"
+
+	translation = f{ 6.25f, 1.0f, 12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+
+objects = [
+	name = "casa24"
+	father = "centro"
+
+	translation = f{ 12.5f, 1.0f, 12.5f} //meters
+	scale = f{ 1.5f } //meters
+	color = f{ 1.0f, 1.0f, 1.0f } //white
+
+	mesh = "cube"
+	shaderProg = "shader-phong"
+	material = [
+		diffuse = "potato3.jpg"
+		specular = f{ 0.5f, 0.5f, 0.5f }
+		shinyness = f{ 32 }
+	]
+]
+

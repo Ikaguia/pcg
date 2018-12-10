@@ -2,9 +2,9 @@ CC=g++
 RMDIR = rm -rf
 RM = rm -f
 
-# DEP_FLAGS = 
+# DEP_FLAGS =
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(DEP_PATH)/$*.d
-DIRECTIVES = -std=c++14 -Wall -Wextra -I $(HEADER_PATH) -O2 -D DATA_PATH=\"$(DATA_PATH)\" -Wno-unused-result -Wno-unused-parameter
+DIRECTIVES = -std=c++17 -Wall -Wextra -I $(HEADER_PATH) -O2 -D DATA_PATH=\"$(DATA_PATH)\" -Wno-unused-result -Wno-unused-parameter
 LIBS = -L$(LIB_PATH) -lGL -lGLU -lglut -lGLEW -L/usr/lib64
 
 SRC_PATH = src
@@ -14,8 +14,8 @@ LIB_PATH = lib
 DATA_PATH = data
 HEADER_PATH = $(SRC_PATH)/headers
 
-CPP_FILES = src/main.cpp src/GLmanager.cpp src/shader.cpp src/dataFile.cpp src/mesh.cpp
-# CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
+# CPP_FILES = src/main.cpp src/GLmanager.cpp src/shader.cpp src/dataFile.cpp src/mesh.cpp src/object.cpp src/common.cpp src/shader.cpp src/shaderProgram.cpp src/inputManager.cpp src/meshManager.cpp
+CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
 OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 DEP_FILES = $(wildcard $(DEP_PATH)/*.d)
 
@@ -26,7 +26,7 @@ all: $(EXEC)
 $(EXEC): $(OBJ_FILES)
 	$(CC) -o $@ $^ $(LIBS)
 run: clear all
-	./$(EXEC)
+	(./$(EXEC) &)
 
 $(BIN_PATH)/%.o: $(SRC_PATH)/%.cpp
 	@mkdir -p $(DEP_PATH) $(BIN_PATH)
@@ -35,7 +35,7 @@ $(BIN_PATH)/%.o: $(SRC_PATH)/%.cpp
 
 clean:
 	$(RMDIR) $(BIN_PATH) $(DEP_PATH)
-	$(RM) $(EXEC)	
+	$(RM) $(EXEC)
 
 clear:
 	clear && clear

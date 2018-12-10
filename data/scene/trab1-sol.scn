@@ -1,0 +1,153 @@
+scene_bg_color = f{ 0.1f, 0.0f, 0.2f, 1.0f }
+
+functions = [
+	name = "time_control"
+	start = "rand"
+	pause = "char "
+	unpause = "char "
+	speed_up = "char+"
+	speed_down = "char-"
+	display = "false"
+]
+
+objects = [
+	name = "sol"
+	father = "sol"
+	shaderProg = "shader6"
+	mesh = "sphere"
+	translation = f{ 0.0f, 0.0f, 0.0f }
+	rotation = f{ 0.0f, 0.0f, 0.0f }
+	scale = f{ 1.0f }
+	texture = [
+		file = "sun.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	functions = [
+		name = "point-light"
+		ambientStrength = f{ 0.1f }
+		specularStrength = f{ 0.5f }
+	]
+	functions = [
+		name = "orbit"
+		day = f{ 100.0f }
+	]
+]
+
+objects = [
+	name = "mercury"
+	father = "sol"
+	shaderProg = "shader5"
+	mesh = "sphere"
+	texture = [
+		file = "earth2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	scale = f{ 0.0035053161 } //sol_radii
+	functions = [
+		name = "orbit"
+		day = f{ 176.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 87.969f } //earth_days
+		distance = f{ 83.202658046f } //sol_radii
+		rotation = f{ 0.0f, 0.0f, 7.0f }
+	]
+]
+
+objects = [
+	name = "venus"
+	father = "sol"
+	shaderProg = "shader5"
+	mesh = "sphere"
+	texture = [
+		file = "earth2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	scale = f{ 0.0086951149f } //sol_radii
+	functions = [
+		name = "orbit"
+		day = f{ 116.75f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 224.701f } //earth_days
+		distance = f{ 155.47126437f } //sol_radii
+		rotation = f{ 0.0f, 0.0f, 3.394f }
+	]
+]
+
+objects = [
+	name = "earth"
+	father = "sol"
+	shaderProg = "shader5"
+	mesh = "sphere"
+	texture = [
+		file = "earth2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	scale = f{ 0.0091537356f } //sol_radii
+	functions = [
+		name = "orbit"
+		day = f{ 1.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 365.256f } //earth_days
+		distance = f{ 214.93968822f } //sol_radii
+		rotation = f{ 0.0f, 0.0f, 0.0f }
+	]
+]
+
+objects = [
+	name = "moon"
+	father = "earth"
+	shaderProg = "shader5"
+	mesh = "sphere"
+	texture = [
+		file = "earth2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	scale = f{ 0.273f } //earth_radii
+	functions = [
+		name = "orbit"
+		day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 27.321f } //earth_days
+		distance = f{ 60.3357400722f } //earth_radii
+		rotation = f{ 0.0f, 0.0f, 5.145f }
+	]
+]
+
+objects = [
+	name = "mars"
+	father = "sol"
+	shaderProg = "shader5"
+	mesh = "sphere"
+	texture = [
+		file = "earth2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	scale = f{ 0.0048699713f } //sol_radii
+	functions = [
+		name = "orbit"
+		day = f{ 1.02749125f } //earth_days_//0.0f_=_tidelocked
+		period = f{ 686.971f } //earth_days
+		distance = f{ 327.49885057f } //sol_radii
+		rotation = f{ 0.0f, 0.0f, 1.850f }
+	]
+]

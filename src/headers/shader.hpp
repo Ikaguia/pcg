@@ -2,17 +2,24 @@
 #define HEADER_SHADER
 
 #include <common.hpp>
+#include <dataFile.hpp>
+#include <resourceManager.hpp>
 
-namespace glShader{
-	GLuint createF(const string &sourceFile, GLenum type);
-	GLuint create(const char* source, GLenum type);
-};
-
-namespace glShaderProgram{
-	GLuint create(const vector<GLuint> &shaders = vector<GLuint>{});
-	void bind(GLuint program, const vector<GLuint> &shaders = vector<GLuint>{});
-	void use(GLuint program = 0);
-	void destroy(GLuint program);
+class Tshader{
+	//private members
+	static const map<string,GLenum> shaderTypes;
+	//private functions
+	GLuint getType(const TdataFile &shaderData);
+	void construct(const TdataFile &shaderData);
+	void destruct();
+public:
+	//public members
+	const GLenum type;
+	const GLuint id;
+	//constructors
+	Tshader(const TdataFile &shaderData);
+	~Tshader();
+	static TresourceManager<Tshader> manager;
 };
 
 #endif//HEADER_SHADER

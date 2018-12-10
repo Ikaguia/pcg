@@ -1,0 +1,103 @@
+scene_bg_color = f{ 0.1f, 0.0f, 0.2f, 1.0f }
+
+functions = [
+	name = "time_control"
+	start = "rand"
+	pause = "char "
+	unpause = "char "
+	speed_up = "char+"
+	speed_down = "char-"
+	display = "false"
+]
+
+objects = [
+	name = "sol"
+	shaderProg = "shader3"
+	mesh = "sphere3.mesh"
+	translation = f{ 0.0f, 0.0f, 0.0f }
+	rotation = f{ 0.0f, 0.0f, 0.0f }
+	scale = f{ 1.0f } //sol_radii,_arbitrary_scale
+	color = f{ 1.0f, 1.0f, 0.0f, 1.0f } //yellow
+	functions = [
+		name = "point-light"
+		color = f{ 1.0f, 1.0f, 1.0f, 1.0f }
+		ambientStrenght = { 0.1f }
+		specularStrenght = { 0.5f }
+	]
+
+	objects = [
+		name = "mercury"
+		shaderProg = "shader4"
+		mesh = "sphere3.mesh"
+		scale = f{ 0.0035053161 } //sol_radii
+		functions = [
+			name = "orbit"
+			day = f{ 176.0f } //earth_days_//0.0f_=_tidelocked
+			period = f{ 87.969f } //earth_days
+			distance = f{ 83.202658046f } //sol_radii
+			rotation = f{ 0.0f, 0.0f, 7.0f }
+		]
+		color = f{ 1.0f, 0.0f, 0.0f, 1.0f } //red
+	]
+
+	objects = [
+		name = "venus"
+		shaderProg = "shader4"
+		mesh = "sphere3.mesh"
+		scale = f{ 0.0086951149f } //sol_radii
+		functions = [
+			name = "orbit"
+			day = f{ 116.75f } //earth_days_//0.0f_=_tidelocked
+			period = f{ 224.701f } //earth_days
+			distance = f{ 155.47126437f } //sol_radii
+			rotation = f{ 0.0f, 0.0f, 3.394f }
+		]
+		color = f{ 1.0f, 1.0f, 0.0f, 1.0f } //yellow
+	]
+
+	objects = [
+		name = "earth"
+		shaderProg = "shader4"
+		mesh = "sphere3.mesh"
+		scale = f{ 0.0091537356f } //sol_radii
+		functions = [
+			name = "orbit"
+			day = f{ 1.0f } //earth_days_//0.0f_=_tidelocked
+			period = f{ 365.256f } //earth_days
+			distance = f{ 214.93968822f } //sol_radii
+			rotation = f{ 0.0f, 0.0f, 0.0f }
+		]
+		color = f{ 0.0f, 1.0f, 0.0f, 1.0f } //green
+
+		objects = [
+			name = "moon"
+			shaderProg = "shader4"
+			mesh = "sphere3.mesh"
+			scale = f{ 0.273f } //earth_radii
+			functions = [
+				name = "orbit"
+				day = f{ 0.0f } //earth_days_//0.0f_=_tidelocked
+				period = f{ 27.321f } //earth_days
+				distance = f{ 60.3357400722f } //earth_radii
+				rotation = f{ 0.0f, 0.0f, 5.145f }
+			]
+			color = f{ 0.0f, 1.0f, 1.0f, 1.0f } //cyan
+		]
+	]
+
+	objects = [
+		name = "mars"
+		shaderProg = "shader4"
+		mesh = "sphere3.mesh"
+		scale = f{ 0.0048699713f } //sol_radii
+		functions = [
+			name = "orbit"
+			day = f{ 1.02749125f } //earth_days_//0.0f_=_tidelocked
+			period = f{ 686.971f } //earth_days
+			distance = f{ 327.49885057f } //sol_radii
+			rotation = f{ 0.0f, 0.0f, 1.850f }
+		]
+		color = f{ 0.0f, 0.0f, 1.0f, 1.0f } //blue
+	]
+]
+

@@ -1,0 +1,19 @@
+name = "shader_sun0"
+shaders = [
+	file = "sun_0.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "basic_lightning.vshader"
+	type = "vshader"
+]
+
+uniform = "modelMatrix"
+uniform = "viewMatrix"
+uniform = "clipMatrix"
+uniform = "theTexture"
+uniform = "cameraPosition"
+uniform = "pLight.position"
+uniform = "pLight.color"
+uniform = "pLight.ambientStrenght"
+uniform = "pLight.specularStrenght"

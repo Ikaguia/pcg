@@ -19,11 +19,16 @@ using uint = unsigned;
 using ii = pair<int,int>;
 
 string to_upper(string s){
-	for(char &c : s)c = toupper(c);
+	for(char &c : s) c = toupper(c);
 	return s;
 }
 
 void make_hpp(string classname, string path){
+	{
+		ifstream file(path + "/" + classname + ".hpp");
+		if(file.is_open()) throw exception();
+	}
+
 	ofstream file(path + "/" + classname + ".hpp");
 
 	string header_class = "HEADER_" + to_upper(classname);
@@ -53,6 +58,10 @@ void make_hpp(string classname, string path){
 }
 
 void make_cpp(string classname, string path){
+	{
+		ifstream file(path + "/" + classname + ".cpp");
+		if(file.is_open()) throw exception();
+	}
 	ofstream file(path + "/" + classname + ".cpp");
 
 	file << "#include <" << classname << ".hpp>" << endl;	//#include <<CLASS.hpp>

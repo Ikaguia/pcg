@@ -3,21 +3,31 @@
 
 #include <common.hpp>
 
+class Tscene;
+
 namespace GLmanager{
-	constexpr float PI = atan(1.0f) * 4.0f;
-	constexpr float degToRadProp = (PI * 2.0f) / 360.0f;
+	extern bool isGlInitialized;
+	extern bool isGlewInitialized;
+	extern bool isGlutInitialized;
+	extern Tscene* scene;
 
 	void run(int argc, char **argv);
-	glm::vec1 makeVec1(const vector<float> &v);
-	glm::vec2 makeVec2(const vector<float> &v);
-	glm::vec3 makeVec3(const vector<float> &v);
-	glm::vec4 makeVec4(const vector<float> &v);
-	glm::mat2 makeMat2(const vector<vector<float>> &m);
-	glm::mat3 makeMat3(const vector<vector<float>> &m);
-	glm::mat4 makeMat4(const vector<vector<float>> &m);
-	template<typename T> GLuint createBuffer(const vector<T> &vals, GLenum type, GLenum usage);
-	GLfloat degToRad(const GLfloat &ang);
-	GLfloat radToDeg(const GLfloat &ang);
+
+	glm::mat4 calcClipMatrix();
+	glm::mat4 calcViewMatrix(glm::mat4 view = glm::mat4(1.0f));
+
+	glm::vec3 getViewportResolution();
+
+	template<typename T> GLuint createBuffer(const vector<T> &vals, GLenum type, GLenum usage){
+		GLuint buffer;
+		glGenBuffers(1, &buffer);
+
+		glBindBuffer(type, buffer);
+		glBufferData(type, vals.size() * sizeof(T), vals.data(), usage);
+		glBindBuffer(type, 0);
+
+		return buffer;
+	}
 };
 
 #endif//HEADER_GLMANAGER

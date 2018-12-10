@@ -1,0 +1,18 @@
+name = "shader5"
+shaders = [
+	file = "basic_lightning3.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "basic_lightning.vshader"
+	type = "vshader"
+]
+
+uniform = "modelMatrix"
+uniform = "viewMatrix"
+uniform = "clipMatrix"
+uniform = "cameraPosition"
+uniform = "pLight.position"
+uniform = "pLight.color"
+uniform = "pLight.ambientStrenght"
+uniform = "pLight.specularStrenght"

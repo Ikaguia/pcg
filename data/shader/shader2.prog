@@ -1,0 +1,12 @@
+name = "shader2"
+shaders = [
+	file = "textureColor.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "model-view-clip+textureColor.vshader"
+	type = "vshader"
+]
+uniform = "modelMatrix"
+uniform = "viewMatrix"
+uniform = "clipMatrix"

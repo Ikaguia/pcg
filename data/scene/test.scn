@@ -1,19 +1,5 @@
-shaderProgs = [
-	name = "shader1"
-	shaders = [
-		file = "base2.fshader"
-		type = "fshader"
-	]
-	shaders = [
-		file = "matrixPersp.vshader"
-		type = "vshader"
-	]
-	uniformLocation = "offset"
-	uniformLocation = "perspectiveMatrix"
-]
-
 objects = [
-	name = "cubo1"
+	name = "cube"
 	type = "polyhedron"
 	shaderProg = "shader1"
 	mesh = "cube.mesh"

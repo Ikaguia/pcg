@@ -1,0 +1,26 @@
+objects = [
+	name = "rolling_cube"
+	shaderProg = "shader2"
+	texture = [
+		type = "color"
+		file = "potato2.jpg"
+		wrap_x = "mirrored_repeat"
+		wrap_y = "mirrored_repeat"
+		min_filter = "linear_mm_linear"
+		// min_filter = "nearest"
+		mag_filter = "linear"
+	]
+	mesh = "cube.mesh"
+	translation = f{ 0.0f, 0.0f, 0.0f }
+	scale = f{ 0.5f, 0.5f, 0.5f }
+	rotation = f{ 0.0f, 0.0f, 0.0f }
+]
+
+objects = [
+	name = "static_cube"
+	shaderProg = "shader1"
+	mesh = "cube.mesh"
+	translation = f{ 0.0f, -0.8f, 0.0f }
+	rotation = f{ 0.0f, 0.0f, 0.0f }
+	scale = f{ 1.0f, 0.1f, 0.7f }
+]

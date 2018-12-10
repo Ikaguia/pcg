@@ -1,0 +1,9 @@
+name = "phong"
+shaders = [
+	file = "phong.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "phong.vshader"
+	type = "vshader"
+]

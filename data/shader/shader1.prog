@@ -1,0 +1,12 @@
+name = "shader1"
+shaders = [
+	file = "vertexColor.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "model-view-clip.vshader"
+	type = "vshader"
+]
+uniform = "modelMatrix"
+uniform = "viewMatrix"
+uniform = "clipMatrix"

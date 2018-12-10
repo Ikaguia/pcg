@@ -1,89 +1,46 @@
 #include <GLmanager.hpp>
-#include <shader.hpp>
-#include <dataFile.hpp>
+#include <object.hpp>
+#include <scene.hpp>
+#include <inputManager.hpp>
 #include <mesh.hpp>
+#include <shaderProgram.hpp>
+#include <camera.hpp>
+
+// #define STAR "kepler-90-binary"
+// #define STAR "kepler-90"
+// #define STAR "sol"
 
 namespace GLmanager{
-	struct object{
-		// GLuint vao, vbo, ebo;
-		Tmesh *mesh;
-		glm::vec3 pos;
-		glm::vec3 sca;
-		glm::vec3 rot;
-	};
-	vector<object> objects;
+	bool isGlInitialized = false;
+	bool isGlewInitialized = false;
+	bool isGlutInitialized = false;
+	Tscene *scene = new Tscene("scene");
 	namespace {
+		Tcamera camera;
+
 		GLuint width = 500, height = 500;
-		GLuint displayMode = GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH | GLUT_STENCIL;
-
-		GLuint shProgram;
-
-		GLuint modelMatrixUnif, viewMatrixUnif, clipMatrixUnif;
+		GLuint displayMode = GLUT_DOUBLE | GLUT_ALPHA | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE;
 
 		GLfloat cameraFOV = 45.0f;
-		GLfloat zNear = 0.1f, zFar = 100.0f;
+		GLfloat zNear = 0.001f, zFar = 1000000.0f;
 
-		glm::mat4 calcClipMatrix(){
-			return glm::perspective(glm::radians(cameraFOV), GLfloat(width)/GLfloat(height), zNear, zFar);
+		void initCamera(){
+			camera.setMode(Tcamera::Emode::free_mode);
+			// camera.setMode(Tcamera::Emode::follow_mode);
+			// camera.follow("center");
+			// camera.follow(STAR);
+			camera.update(0);
+
+			inputManager::setMouseHidden(true);
+			inputManager::setMouseLocked(true);
 		}
-
-		glm::mat4 calcViewMatrix(glm::mat4 view = glm::mat4(1.0f)){
-			view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
-			view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1, 0, 0));
-
-			// //cameraPosition
-			// view = glm::translate(view, -cameraPosition);
-			// //cameraRotation
-
-			return view;
-		}
-
-		glm::mat4 calcModelMatrix(const object &obj, glm::mat4 model = glm::mat4(1.0f)){
-			//translation
-			model = glm::translate(model, obj.pos);
-			//rotation
-			model = glm::rotate(model, obj.rot.x, glm::vec3(1.0f, 0.0f, 0.0f));
-			model = glm::rotate(model, obj.rot.y, glm::vec3(0.0f, 1.0f, 0.0f));
-			model = glm::rotate(model, obj.rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
-			//scale
-			model = glm::scale(model, obj.sca);
-			return model;
-		}
-
-		void defaults(){}
-		void initShaders(){
-			shProgram = glShaderProgram::create({
-				glShader::createF("vertexColor.fshader", GL_FRAGMENT_SHADER),
-				// glShader::createF("model-world-camera-clip.vshader", GL_VERTEX_SHADER),
-				glShader::createF("test.vshader", GL_VERTEX_SHADER),
-			});
-			modelMatrixUnif = glGetUniformLocation(shProgram, "modelMatrix");
-			viewMatrixUnif = glGetUniformLocation(shProgram, "viewMatrix");
-			clipMatrixUnif = glGetUniformLocation(shProgram, "clipMatrix");
-
-			glUseProgram(shProgram);
-			glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(glm::mat4()));
-			glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcViewMatrix()));
-			glUniformMatrix4fv(clipMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcClipMatrix()));
-			glUseProgram(0);
-		}
-		void initObjects(){
-			Tmesh *cube = new Tmesh("cube", "cube");
-			objects.resize(2);
-
-			objects[0].mesh = cube;
-			objects[0].pos = glm::vec3{ 0.0f,  0.0f,  0.0f};
-			objects[0].sca = glm::vec3{ 0.5f,  0.5f,  0.5f};
-			objects[0].rot = glm::vec3{ 0.0f,  0.0f,  0.0f};
-
-			objects[1].mesh = cube;
-			objects[1].pos = glm::vec3{ 0.0f, -0.8f,  0.0f};
-			objects[1].sca = glm::vec3{ 1.0f,  0.1f,  0.7f};
-			objects[1].rot = glm::vec3{ 0.0f,  0.0f,  0.0f};
+		void initScene(){
+			scene->load("trab2-cidade1");
+			// scene->load("trab1-" STAR);
 		}
 		void init(){
-			initShaders();
-			initObjects();
+			initScene();
+			initCamera();
 
 			glEnable(GL_CULL_FACE);
 			glCullFace(GL_BACK);
@@ -92,43 +49,14 @@ namespace GLmanager{
 			glEnable(GL_DEPTH_TEST);
 			glDepthMask(GL_TRUE);
 			glDepthFunc(GL_LEQUAL);
-			// glDepthRange(0, 1);
+
+			glEnable(GL_MULTISAMPLE);
 		}
 		void display(){
 			//reset buffers
-			glClearDepth(zFar);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//setup shader program
-			glUseProgram(shProgram);
-
-
-			// glUniformMatrix4fv(viewMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcViewMatrix()));
-			// glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcModelMatrix(objects[0])));
-			// objects[0].mesh->draw();
-			for(auto &obj : objects){
-				glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE, glm::value_ptr(calcModelMatrix(obj)));
-
-				obj.mesh->draw();
-				// glBindVertexArray(obj.vao);
-				// glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-				// glBindVertexArray(0);
-			}
-
-			// //render each object
-			// for(auto &obj : objs){
-			// 	//TODO: check if object should be drawn
-			// 	calcModelMatrix(obj);
-			// 	glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE,
-			// 		glm::value_ptr(model));
-			// 	obj.mesh->draw();
-			// }
-
-			// //reset shader uniforms
-			// glUniformMatrix4fv(modelMatrixUnif, 1, GL_FALSE,
-			// 	glm::value_ptr((model = glm::mat4(1.0f))));
-
-			glUseProgram(0);
+			scene->draw();
 
 			//flush changes
 			glutSwapBuffers();
@@ -141,45 +69,36 @@ namespace GLmanager{
 				height = h;
 				// recalculate perspective matrix with new values
 				auto clip = calcClipMatrix();
-				//set the shader program to use the new matrix
-				glUseProgram(shProgram);
-				glUniformMatrix4fv(
-					clipMatrixUnif, 1, GL_FALSE, glm::value_ptr(clip));
+				auto res = getViewportResolution();
+				//set the shader programs to use the new matrix
+				for(auto &[_, prog] : TshaderProgram::manager.resources){
+					prog->setUniform("clipMatrix", clip);
+					prog->setUniform("iResolution", res);
+				}
 				glUseProgram(0);
 
 				glViewport(0, 0, (GLsizei) w, (GLsizei) h);
 			}
 		}
-		void keyboard(unsigned char key, int x, int y){
-			switch (key){
-				case '\x1b'://escape
-					glutLeaveMainLoop();
-				return;
-			}
-		}
 		void cleanup(){
-			glShaderProgram::destroy(shProgram);
-			delete objects[0].mesh;
-			objects.clear();
+			delete scene;
+			Tmesh::manager.clear();
+			Tshader::manager.clear();
+			TshaderProgram::manager.clear();
 		}
 		void update(){
-			GLfloat time = glutGet(GLUT_ELAPSED_TIME);
+			static GLfloat lastTime = 0.0f;
+			GLfloat curTime = glutGet(GLUT_ELAPSED_TIME);
+			GLfloat dTime = curTime - lastTime;
 
 
-			objects[0].pos.x = sin(time / 500.0f);
-			objects[0].rot.z = sin(glm::radians(360.0f) - (time / 500.0f));
+			if(inputManager::isKeyDown(key_escape)) glutLeaveMainLoop();
 
+			scene->update(dTime);
+			camera.update(dTime);
+			inputManager::update(dTime);
 
-			glm::vec4 p1( objects[0].sca.x, -objects[0].sca.y, 0.0f, 1.0f);
-			glm::vec4 p2(-objects[0].sca.x, -objects[0].sca.y, 0.0f, 1.0f);
-			glm::mat4 rot(1.0f);
-			glm::rotate(rot, objects[0].rot.x, glm::vec3(1, 0, 0));
-			glm::rotate(rot, objects[0].rot.y, glm::vec3(0, 1, 0));
-			rot = glm::rotate(rot, objects[0].rot.z, glm::vec3(0.0f, 0.0f, 1.0f));
-			p1 = rot * p1;
-			p2 = rot * p2;
-
-			objects[0].pos.y = objects[1].pos.y + objects[1].sca.y - min(p1.y, p2.y);
+			lastTime = curTime;
 		}
 		#ifdef DEBUG
 		void GLAPIENTRY debugCallback(GLenum source,
@@ -266,8 +185,6 @@ namespace GLmanager{
 	void run(int argc, char **argv){
 		glutInit(&argc, argv);
 
-		defaults();
-
 		glutInitDisplayMode(displayMode);
 		glutInitContextVersion(4, 5);
 		glutInitContextProfile(GLUT_CORE_PROFILE);
@@ -276,14 +193,19 @@ namespace GLmanager{
 		glutInitWindowPosition(300, 200);
 		glutCreateWindow(argv[0]);
 		glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+		glutSetKeyRepeat(GLUT_KEY_REPEAT_OFF);
+		#ifndef DEBUG
+		glutFullScreen();
+		#endif
+		isGlutInitialized = true;
 
 		glewExperimental=GL_TRUE;
 		GLenum err = glewInit();
 		if(err != GLEW_OK){
-			cerr << "Error initializing glew: " << glewGetErrorString(err) << endl;
-			exit(1);
+			string s = (char*)glewGetErrorString(err);
+			throw runtime_error("Error initializing glew: '" + s + "'\n");
 		}
-
+		isGlewInitialized = true;
 
 		#ifdef DEBUG
 		W(glGetString(GL_VERSION));
@@ -291,50 +213,38 @@ namespace GLmanager{
 			glEnable(GL_DEBUG_OUTPUT);
 			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 			glDebugMessageCallback(debugCallback, nullptr);
-			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, true);
+			glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, true);
 			glutInitContextFlags(GLUT_DEBUG);
 		}
-		else WARN("glDebugMessageCallback not available");
 		#endif//DEBUG
+		glClearDepth(zFar);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		isGlInitialized = true;
 
 		init();
 
 		glutDisplayFunc(display);
 		glutReshapeFunc(reshape);
-		glutKeyboardFunc(keyboard);
 		glutIdleFunc(update);
+		glutCloseFunc(cleanup);
+		inputManager::init();//sets up keyboard and mouse callbacks
 		glutMainLoop();
-
-		cleanup();
-	}
-	glm::vec1 makeVec1(const vector<GLfloat> &v){ return glm::vec1{ v[0] }; }
-	glm::vec2 makeVec2(const vector<GLfloat> &v){ return glm::vec2{ v[0], v[1] }; }
-	glm::vec3 makeVec3(const vector<GLfloat> &v){ return glm::vec3{ v[0], v[1], v[2] }; }
-	glm::vec4 makeVec4(const vector<GLfloat> &v){ return glm::vec4{ v[0], v[1], v[2], v[3] }; }
-	glm::mat2 makeMat2(const vector<vector<GLfloat>> &m){
-		return glm::mat2{ makeVec2(m[0]), makeVec2(m[1]) };
-	}
-	glm::mat3 makeMat3(const vector<vector<GLfloat>> &m){
-		return glm::mat3{ makeVec3(m[0]), makeVec3(m[1]), makeVec3(m[2]) };
-	}
-	glm::mat4 makeMat4(const vector<vector<GLfloat>> &m){
-		return glm::mat4{ makeVec4(m[0]), makeVec4(m[1]), makeVec4(m[2]), makeVec4(m[3]) };
+		isGlutInitialized = isGlewInitialized = isGlInitialized = false;
 	}
 
-	template<typename T> GLuint createBuffer(const vector<T> &vals, GLenum type, GLenum usage){
-		GLuint buffer;
-		glGenBuffers(1, &buffer);
-
-		glBindBuffer(type, buffer);
-		glBufferData(type, vals.size() * sizeof(T), vals.data(), usage);
-		glBindBuffer(type, 0);
-
-		return buffer;
+	glm::mat4 calcClipMatrix(){
+		return glm::perspective(glm::radians(cameraFOV), GLfloat(width)/GLfloat(height), zNear, zFar);
 	}
+	glm::mat4 calcViewMatrix(glm::mat4 view){
+		view = camera.getViewMatrix();
 
-	GLfloat degToRad(const GLfloat &ang){ return ang * degToRadProp; }
-	GLfloat radToDeg(const GLfloat &ang){ return ang / degToRadProp; }
+		if(scene) view = view * scene->scene_scale;
 
+		return view;
+	}
+	glm::vec3 getViewportResolution(){
+		return glm::vec3(width, height, 1);
+	}
 }
 
 

@@ -1,0 +1,12 @@
+name = "shader6"
+shaders = [
+	file = "basic_lightning2.fshader"
+	type = "fshader"
+]
+shaders = [
+	file = "basic_lightning.vshader"
+	type = "vshader"
+]
+uniform = "modelMatrix"
+uniform = "viewMatrix"
+uniform = "clipMatrix"

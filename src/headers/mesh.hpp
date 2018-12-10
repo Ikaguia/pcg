@@ -2,32 +2,34 @@
 #define HEADER_MESH
 
 #include <common.hpp>
-
 #include <dataFile.hpp>
+#include <resourceManager.hpp>
 
 class Tmesh{
 	struct vertex{
-		array<GLfloat,4> xyzw;
-		array<GLfloat,4> rgba;
-		bool operator<(const vertex &other)const;
+		glm::vec4 xyzw = glm::vec4{0,0,0,1};
+		glm::vec2 tex  = glm::vec2{0,0};
+		glm::vec3 norm = glm::vec3{0,0,0};
+		bool operator<(const vertex &other) const;
 	};
 	//private members
-	GLuint vbo, ibo, vao;//vertex buffer, index buffer, vertex array objects
+	const GLuint vao, vbo, ebo;//vertex array, vertex buffer, element buffer objects
 	GLuint vertexCount;
 	//private functions
+	void construct(vector<vertex> vToInd, vector<uint> inds);
 	void destruct();
 public:
 	//public members
 	const string name;
 	//constructors
-	Tmesh(const string &thename, const TdataFile &meshData);
-	Tmesh(const string &thename, const string &fileName);
+	Tmesh(const string &fileName);
 	~Tmesh();
 	//public functions
-	void construct(const TdataFile &meshData);
-	void draw(glm::vec4 translation=glm::vec4(), glm::vec4 rotation=glm::vec4(), glm::vec4 scale=glm::vec4());
+	void draw();
 
 	static vector<array<uint, 3>> triangulate(const vector<uint>&, const vector<vertex>&);
+	static TresourceManager<Tmesh> manager;
 };
+
 
 #endif//HEADER_MESH
